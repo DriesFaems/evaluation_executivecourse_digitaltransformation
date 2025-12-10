@@ -10,12 +10,8 @@ st.write("Paste your generative AI transformation trajectory below. The agent wi
 
 # Sidebar: API key and model
 st.sidebar.header("Settings")
-# Try to get API key from secrets, fallback to environment variable or user input
-api_key = st.secrets.get("OPENAI_API_KEY", os.environ.get("OPENAI_API_KEY", ""))
-if not api_key:
-    api_key = st.sidebar.text_input("OpenAI API Key", type="password")
-else:
-    st.sidebar.info("Using API key from secrets")
+# Get API key from secrets
+api_key = st.secrets.get("OPENAI_API_KEY", "")
 model = st.sidebar.text_input("Model", value="gpt-5-nano")
 
 # Text input
@@ -132,7 +128,7 @@ if run:
     if not user_text.strip():
         st.warning("Please paste your submission text before evaluating.")
     elif not api_key:
-        st.warning("Provide an OpenAI API key in the sidebar, set OPENAI_API_KEY secret, or set OPENAI_API_KEY environment variable.")
+        st.warning("OPENAI_API_KEY not found in Streamlit secrets. Please configure it in your secrets.toml file.")
     else:
         with st.spinner("Evaluating..."):
             try:
