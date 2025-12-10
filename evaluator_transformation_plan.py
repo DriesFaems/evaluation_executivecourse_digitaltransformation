@@ -10,7 +10,12 @@ st.write("Paste your generative AI transformation trajectory below. The agent wi
 
 # Sidebar: API key and model
 st.sidebar.header("Settings")
-api_key = st.sidebar.text_input("OpenAI API Key", type="password")
+# Try to get API key from secrets, fallback to environment variable or user input
+api_key = st.secrets.get("OPENAI_API_KEY", os.environ.get("OPENAI_API_KEY", ""))
+if not api_key:
+    api_key = st.sidebar.text_input("OpenAI API Key", type="password")
+else:
+    st.sidebar.info("Using API key from secrets")
 model = st.sidebar.text_input("Model", value="gpt-5-nano")
 
 # Text input
@@ -126,8 +131,8 @@ def call_agent(api_key: str, model: str, user_text: str):
 if run:
     if not user_text.strip():
         st.warning("Please paste your submission text before evaluating.")
-    elif not api_key and not os.environ.get("OPENAI_API_KEY"):
-        st.warning("Provide an OpenAI API key in the sidebar or set OPENAI_API_KEY.")
+    elif not api_key:
+        st.warning("Provide an OpenAI API key in the sidebar, set OPENAI_API_KEY secret, or set OPENAI_API_KEY environment variable.")
     else:
         with st.spinner("Evaluating..."):
             try:
