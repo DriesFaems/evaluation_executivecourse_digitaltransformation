@@ -10,7 +10,8 @@ st.write("Paste your assignment text below. The agent will evaluate it against t
 
 # Sidebar: API key and model
 st.sidebar.header("Settings")
-api_key = st.sidebar.text_input("OpenAI API Key", type="password")
+api_key = st.secrets["OPENAI_API_KEY"]
+os.environ["OPENAI_API_KEY"] = api_key
 model = st.sidebar.text_input("Model", value="gpt-5-nano")
 
 # Text input
