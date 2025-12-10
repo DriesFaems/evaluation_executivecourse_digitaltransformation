@@ -11,7 +11,8 @@ st.write("Paste your generative AI transformation trajectory below. The agent wi
 # Sidebar: API key and model
 st.sidebar.header("Settings")
 # Get API key from secrets
-api_key = st.secrets.get("OPENAI_API_KEY", "")
+api_key = st.secrets["OPENAI_API_KEY"]
+os.environ["OPENAI_API_KEY"] = api_key
 model = st.sidebar.text_input("Model", value="gpt-5-nano")
 
 # Text input
